@@ -20,6 +20,12 @@
 #include "config/ActiveSettings.h"
 #include "config/CemuConfig.h"
 #include "WindowSystem.h"
+#if BOOST_OS_WINDOWS
+	#ifndef WIN32_LEAN_AND_MEAN
+	#define WIN32_LEAN_AND_MEAN
+	#endif
+	#include <windows.h>
+#endif
 
 #include "imgui/imgui_extension.h"
 #include "imgui/imgui_impl_vulkan.h"
@@ -1832,6 +1838,11 @@ void VulkanRenderer::UnrecoverableError(const char* errMsg) const
 {
 	cemuLog_log(LogType::Force, "Unrecoverable error in Vulkan renderer");
 	cemuLog_log(LogType::Force, "Msg: {}", errMsg);
+#if BOOST_OS_WINDOWS
+	// Mostrar caixa de dialogo de erro para o usuario (icone de erro)
+	// MB_SETFOREGROUND | MB_TOPMOST ajuda a trazer a janela a frente caso esteja em segundo plano
+	MessageBoxA(nullptr, errMsg, "Cemu - Vulkan Unrecoverable Error", MB_ICONERROR | MB_OK | MB_SETFOREGROUND | MB_TOPMOST);
+#endif
 	throw std::runtime_error(errMsg);
 }
 

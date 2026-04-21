@@ -1370,7 +1370,7 @@ void VulkanRenderer::draw_execute(uint32 baseVertex, uint32 baseInstance, uint32
 			vkCmdBindIndexBuffer(m_state.currentCommandBuffer, indexReservation->vkBuffer, indexBufferOffset, vkType);
 		}
 		else
-			isPrevIndexData = true;
+		 isPrevIndexData = true;
 	}
 
 	if (m_useHostMemoryForCache)
@@ -1469,7 +1469,7 @@ void VulkanRenderer::draw_execute(uint32 baseVertex, uint32 baseInstance, uint32
 		draw_updateVkBlendConstants();
 
 	// update descriptor sets
-	uint32_t dynamicOffsets[17 * 2];
+	uint32_t dynamicOffsets[(LATTE_NUM_MAX_UNIFORM_BUFFERS + 1) * VulkanRendererConst::SHADER_STAGE_INDEX_COUNT];
 	if (vertexDS && pixelDS)
 	{
 		// update vertex and pixel descriptor set in a single call to vkCmdBindDescriptorSets
